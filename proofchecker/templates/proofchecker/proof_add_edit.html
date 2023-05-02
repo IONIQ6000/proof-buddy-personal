@@ -41,11 +41,9 @@
                     </div>
                 {% endif %}
                 {% endfor %}
-
-                <button id="btn_start_proof" style="margin-right: 5px;" class="btn btn-primary mt-3" type="button"
-                        onclick="start_proof(this)">
-                    Start Proof
-                </button>
+                
+                
+                {% if object.pk %} {% if object.created_by == request.user %}
                 <button id="btn_start_disproof" class="btn btn-danger mt-3" type="button"
                         onclick="start_disproof(this)">
                     Start Counter Example
@@ -53,6 +51,13 @@
                 <button id="btn_restart_proof" class="btn btn-primary mt-3 hidden" type="button"
                         onclick="restart_proof()">Restart Proof
                 </button>
+                {% endif %} {% else %}
+                <button name="submit" style="margin-right: 5px;" class="btn btn-primary mt-3" type="submit"
+                        onclick="start_proof(this)">
+                    Start Proof
+                </button>
+                {% endif %}
+                
             </table>
 
             <div id="valid-premise-div"></div>
@@ -164,12 +169,8 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        {% if request.user.is_instructor%}
-                        <td></td>
-                        {% endif %}
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        
+                        
                     </tr>
                     </thead>
                     <div id="valid-premise-div"></div>
@@ -260,6 +261,7 @@
                         </button>
 
                     </td>
+                    <!--
                     {% if request.user.is_instructor%}
                     <td>
                         <button class="add_comment btn btn-light btn-sm" type="button" 
@@ -272,7 +274,7 @@
                         </button>    
                     </td>
                     {% endif %}
-
+                
                     <td>
                         <button class="add_response btn btn-light btn-sm" type="button" 
                                 name="proofline_set-{{ forloop.counter0 }}-response-btn" 
@@ -297,12 +299,12 @@
                     <td>
                         {{ line.response }}
                     </td>
-
+                -->
                     <td hidden>{{ line.id }}{{ line.DELETE }}{{ line.ORDER }}</td>
                     </tr>
                     {% endfor %}
                     </tbody>
-
+                
                     <tr id="empty-form" class="hidden">
 
                         <td>{{ formset.empty_form.line_no|add_class:"line-no-CSS" }}</td>
@@ -379,7 +381,7 @@
                                 </svg>
                             </button>
                         </td>
-
+<!--
                         {% if request.user.is_instructor%}
                         <td>
                             <button class="add_comment btn btn-light btn-sm" type="button" 
@@ -405,7 +407,7 @@
                             </button>    
                         </td>
 
-
+                    
                         {% if request.user.is_student%}
                         <td>
                         {{  formset.empty_form.comment |attr:"readonly:true"  }}
@@ -416,13 +418,15 @@
                             {{ formset.empty_form.comment }}
                         </td>
                         {% endif %}
+                    
                         <td>
                             {{ formset.empty_form.response }}
                         </td>
-
+                    -->
                         <td hidden>
                             {{ formset.empty_form.id }}{{ formset.empty_form.DELETE }}{{ formset.empty_form.ORDER }}
                         </td>
+                    
                     </tr>
                 </table>
             {% endif %}
@@ -513,7 +517,7 @@
         </div>
 
     </div>
-<!--
+
     <script type="text/javascript">
         let typingTimer;
         const doneTypingInterval = 2000;
@@ -547,7 +551,7 @@
 
         };
     </script>
--->
+
     <script src="{% static 'js/syntax.js' %}"></script>
     <script src="{% static 'js/valid_input.js' %}"></script>
     <script src="{% static 'js/proof_checker.js' %}"></script>

@@ -152,39 +152,37 @@ def proof_create_view(request):
                 response = verify_proof(proof, parser)
 
             elif 'submit' in request.POST:
-                if len(formset.forms) > 0:
-                    parent.created_by = request.user
-                    parent.save()
-                    formset.save()
-                    return HttpResponseRedirect(reverse('all_proofs'))
+                parent = form.save(commit=False)
+                
+                parent.created_by = request.user
+                parent.save()
+                formset.save()
+                
+                return HttpResponseRedirect('/proofs/'+str(parent.pk)+'/update/')
 
             elif 'check_disproof' in request.POST:
                 proof = ProofObj(lines=[])
                 proof.rules = str(parent.rules)
                 proof.premises = get_premises(parent.premises)
                 proof.conclusion = str(parent.conclusion)
-                
+                    
                 valDict = []
                 vals = request.POST.getlist('disproof_checkbox') # This brings back the variables that are true
                 if vals != None:
-                    valDict = setVals(makeDict(proof), vals)
+                        valDict = setVals(makeDict(proof), vals)
                 else:
                     valDict = makeDict(proof)
-                
+                    
                 response = checkCntrEx(proof,valDict)
                 if response.is_valid:
                     print("That is a valid counterexample -- Good Job!")
                 else:
                     print(response.err_msg)
-                    
-            elif 'autosave' in request.POST:
-                    if len(formset.forms) > 0:
-                        parent.created_by = request.user
-                        parent.save()
-                        formset.save()
-        else: #Handle errors
-            if (form.errors.__contains__('name')):
-                messages.error(request, 'The name ' + str(form.data['name']) + ' has already exist. Please choose a different name for this proof.')
+                        
+                
+            else: #Handle errors
+                if (form.errors.__contains__('name')):
+                    messages.error(request, 'The name ' + str(form.data['name']) + ' has already exist. Please choose a different name for this proof.')
 
     context = {
         "object": form,

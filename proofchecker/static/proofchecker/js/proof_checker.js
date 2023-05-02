@@ -214,6 +214,7 @@ function start_proof(element) {
     document.getElementById("btn_restart_proof").removeAttribute("hidden")
     reset_order_fields()
     updateLineCount()
+    
 }
 
 /**
