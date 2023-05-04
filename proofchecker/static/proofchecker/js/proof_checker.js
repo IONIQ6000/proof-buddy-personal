@@ -167,6 +167,10 @@ function set_table_visibility() {
  * this function starts proof by inserting rows for premises and conclusions.
  */
 function start_proof(element) {
+
+    
+    document.getElementById("proof_form_display").removeAttribute("hidden");
+
     const premises = document.getElementById('id_premises').value;
     const premiseArray = premises.split(";").map(item => item.trim());
     const prooflineTableBody = document.getElementById(FORMSET_TBODY_ID);

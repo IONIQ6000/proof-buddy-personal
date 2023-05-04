@@ -1,7 +1,7 @@
 {% extends 'proofchecker/base.html' %} {% load static %} {% block content %} {% load widget_tweaks %}
-    <div class="pt-3 mt-3 px-3 mx-3">
+<div class="pt-3 mt-3 px-3 mx-3">
 
-        <!-- {% if  request.user != createdby.user %}
+    <!-- {% if  request.user != createdby.user %}
             <div class="col-md-12 info-banner">
                 <div class="info">
                     <i class="icon-info-sign"></i>
@@ -13,58 +13,61 @@
             <br>
         {% endif %} -->
 
-        {% if object.pk %} {% if object.created_by == request.user %}
-            <h3 class="font-weight-bold mb-2">Edit Proof </h3>
-        {% else %}
-            <h3 class="font-weight-bold mb-2">Proof Details</h3>
-        {% endif %} {% else %}
-            <h3 class="font-weight-bold mb-2">Create Proof</h3>
-        {% endif %}
+    {% if object.pk %} {% if object.created_by == request.user %}
+    <h3 class="font-weight-bold mb-2">Edit Proof </h3>
+    {% else %}
+    <h3 class="font-weight-bold mb-2">Proof Details</h3>
+    {% endif %} {% else %}
+    <h3 class="font-weight-bold mb-2">Create Proof</h3>
+    {% endif %}
 
 
-        <form id="proof_form" action="" method="post">
+    <form id="proof_form" action="" method="post">
 
-            <table class="table table-hover table-large">
-                {% csrf_token %} {% for line in form %}
-                {% if line.label != 'Disproof string'%}
-                    <div class="row">
-                        <div id="premise-conclusion" class="col-md-1 col-sm-6">
-                            {{ line.label }}
-                        </div>
-                        <div class="col-12 col-md-8">
-                            {{ line }}
-                        </div>
-                    </div>
-                {% else %}
-                    <div hidden class="disproof_string">
-                        {{ line }}
-                    </div>
-                {% endif %}
-                {% endfor %}
-                
-                
-                {% if object.pk %} {% if object.created_by == request.user %}
-                <button id="btn_start_disproof" class="btn btn-danger mt-3" type="button"
-                        onclick="start_disproof(this)">
-                    Start Counter Example
-                </button>
-                <button id="btn_restart_proof" class="btn btn-primary mt-3 hidden" type="button"
-                        onclick="restart_proof()">Restart Proof
-                </button>
-                {% endif %} {% else %}
-                <button name="submit" style="margin-right: 5px;" class="btn btn-primary mt-3" type="submit"
-                        onclick="start_proof(this)">
-                    Start Proof
-                </button>
-                {% endif %}
-                
-            </table>
+        <table class="table table-hover table-large">
+            {% csrf_token %} {% for line in form %}
+            {% if line.label != 'Disproof string'%}
+            <div class="row">
+                <div id="premise-conclusion" class="col-md-1 col-sm-6">
+                    {{ line.label }}
+                </div>
+                <div class="col-12 col-md-8">
+                    {{ line }}
+                </div>
+            </div>
+            {% else %}
+            <div hidden class="disproof_string">
+                {{ line }}
+            </div>
+            {% endif %}
+            {% endfor %}
 
-            <div id="valid-premise-div"></div>
-            <div id="valid-conclusion-div"></div>
+
+            {% if object.pk %} {% if object.created_by == request.user %}
+            <button id="btn_start_disproof" class="btn btn-danger mt-3" type="button" onclick="start_disproof(this)">
+                Start Counter Example
+            </button>
+            <button id="btn_restart_proof" class="btn btn-primary mt-3 hidden" type="button"
+                onclick="restart_proof()">Restart Proof
+            </button>
+            {% endif %} {% else %}
+           
+
+            <button name="submit" style="margin-right: 5px;" class="btn btn-primary mt-3" type="submit"
+                onclick="start_proof(this)">
+                Start Proof
+            </button>
+            {% endif %}
+
+        </table>
+
+        <div id="valid-premise-div"></div>
+        <div id="valid-conclusion-div"></div>
+
+        <div id="proof_form_display">
 
             <a class="btn btn-secondary btn-sm" data-toggle="collapse" href="#collapseExample" role="button"
-               aria-expanded="false" aria-controls="collapseExample" style="font-size: 12px">
+                aria-expanded="false" aria-controls="collapseExample" style="font-size: 12px">
                 Table Button Info
             </a>
             <div class="collapse" id="collapseExample" style="max-width: 925px">
@@ -75,8 +78,10 @@
                             <button class="btn btn-primary btn-sm" type="button" style="pointer-events: none;">
 
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                     class="bi bi-plus-square-fill" viewBox="0 0 16 16">
-                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"></path>
+                                    class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z">
+                                    </path>
                                 </svg>
                             </button>
                             Add a new line to the proof
@@ -86,8 +91,10 @@
 
                             <button class="btn btn-info btn-sm" type="button" style="pointer-events: none;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                     class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
-                                    <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1z"></path>
+                                    class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1z">
+                                    </path>
                                 </svg>
                             </button>
                             Pull the current line out of the subproof
@@ -96,8 +103,10 @@
                         <div class="pr-2">
                             <button class="btn btn-info btn-sm" type="button" style="pointer-events: none;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                     class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
-                                    <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"></path>
+                                    class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z">
+                                    </path>
                                 </svg>
                             </button>
                             Push the current line into a subproof
@@ -106,10 +115,12 @@
 
                         <div class="pr-2">
                             <button class="delete-row btn btn-danger btn-sm" type="button"
-                                    style="pointer-events: none;">
+                                style="pointer-events: none;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                     class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"></path>
+                                    class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z">
+                                    </path>
                                 </svg>
                             </button>
                             Delete line from the proof
@@ -121,8 +132,10 @@
 
                             <button class="move_up btn btn-sm btn-light" type="button" style="pointer-events: none;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                     class="bi bi-caret-up-fill" viewBox="0 0 16 16">
-                                    <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"></path>
+                                    class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z">
+                                    </path>
                                 </svg>
                             </button>
                             Swaps the current row with the one above if they're sequential or pushes current row up into
@@ -131,10 +144,12 @@
                         </div>
                         <div class="pr-1">
                             <button class="move_down btn btn-sm btn-light btn-sm" type="button"
-                                    style="pointer-events: none;">
+                                style="pointer-events: none;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                     class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"></path>
+                                    class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z">
+                                    </path>
                                 </svg>
                             </button>
                             Swaps the current row with the one below it if they're sequential or pushes current row down
@@ -155,10 +170,10 @@
             </div>
 
             {% if formset %} {{ formset.management_form }}
-                <!-- Display lines -->
-                <table class="table table-hover table-striped table-sm table-responsive"
-                       id="proof-table" style="background: #e1e1e1;width: auto;float: left;overflow: hidden;">
-                    <thead id="column-titles">
+            <!-- Display lines -->
+            <table class="table table-hover table-striped table-sm table-responsive" id="proof-table"
+                style="background: #e1e1e1;width: auto;float: left;overflow: hidden;">
+                <thead id="column-titles">
                     <tr class="font-weight-bold">
                         <td>Line #</td>
                         <td>Expression</td>
@@ -169,99 +184,109 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        
-                        
+
+
                     </tr>
-                    </thead>
-                    <div id="valid-premise-div"></div>
-                    <div id="valid-conclusion-div"></div>
-                    <br>
-                    <tbody id="proofline-list">
+                </thead>
+                <div id="valid-premise-div"></div>
+                <div id="valid-conclusion-div"></div>
+                <br>
+                <tbody id="proofline-list">
                     {% for line in formset %} {% if line.DELETE.value %}
-                        <tr id="proofline_set-{{ forloop.counter0 }}" class="proofline_set hidden">
-                            {% else %}
-                        <tr id="proofline_set-{{ forloop.counter0 }}" class="proofline_set ">
-                    {% endif %}
+                    <tr id="proofline_set-{{ forloop.counter0 }}" class="proofline_set hidden">
+                        {% else %}
+                    <tr id="proofline_set-{{ forloop.counter0 }}" class="proofline_set ">
+                        {% endif %}
 
-                    <td>{{ line.line_no|add_class:"line-no-CSS" }}</td>
-                    <td>{{ line.formula|add_class:"form-fields-CSS" }}</td>
-                    <td>{{ line.rule|add_class:"form-fields-CSS" }}</td>
-                    <td>
-                        <button class="insert-row btn btn-primary btn-sm" type="button"
+                        <td>{{ line.line_no|add_class:"line-no-CSS" }}</td>
+                        <td>{{ line.formula|add_class:"form-fields-CSS" }}</td>
+                        <td>{{ line.rule|add_class:"form-fields-CSS" }}</td>
+                        <td>
+                            <button class="insert-row btn btn-primary btn-sm" type="button"
                                 name="proofline_set-{{ forloop.counter0 }}-insert-btn"
-                                id="id_proofline_set-{{ forloop.counter0 }}-insert-btn"
-                                value="Insert Row" onclick="insert_form(this)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                 class="bi bi-plus-square-fill" viewBox="0 0 16 16">
-                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"></path>
-                            </svg>
-                        </button>
-                    </td>
+                                id="id_proofline_set-{{ forloop.counter0 }}-insert-btn" value="Insert Row"
+                                onclick="insert_form(this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
+                                    class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z">
+                                    </path>
+                                </svg>
+                            </button>
+                        </td>
 
-                    <td>
-                        <button class="make_parent btn btn-info btn-sm" type="button"
+                        <td>
+                            <button class="make_parent btn btn-info btn-sm" type="button"
                                 name="proofline_set-{{ forloop.counter0 }}-make_parent-btn"
-                                id="id_proofline_set-{{ forloop.counter0 }}-make_parent-btn"
-                                value="Make Parent" onclick="make_parent(this)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                 class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
-                                <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1z"></path>
-                            </svg>
+                                id="id_proofline_set-{{ forloop.counter0 }}-make_parent-btn" value="Make Parent"
+                                onclick="make_parent(this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
+                                    class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1z">
+                                    </path>
+                                </svg>
 
-                        </button>
-                    </td>
+                            </button>
+                        </td>
 
-                    <td>
-                        <button class="create_subproof btn btn-info btn-sm" type="button"
+                        <td>
+                            <button class="create_subproof btn btn-info btn-sm" type="button"
                                 name="proofline_set-{{ forloop.counter0 }}-create_subproof-btn"
                                 id="id_proofline_set-{{ forloop.counter0 }}-create_subproof-btn" value="Create Subproof"
                                 onclick="create_subproof(this)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                 class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
-                                <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"></path>
-                            </svg>
-                        </button>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
+                                    class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z">
+                                    </path>
+                                </svg>
+                            </button>
 
-                    </td>
+                        </td>
 
-                    <td>
-                        <button class="move_up btn btn-sm btn-light" type="button"
+                        <td>
+                            <button class="move_up btn btn-sm btn-light" type="button"
                                 name="proofline_set-{{ forloop.counter0 }}-move_up-btn"
-                                id="id_proofline_set-{{ forloop.counter0 }}-move_up-btn"
-                                value="Move Up"
+                                id="id_proofline_set-{{ forloop.counter0 }}-move_up-btn" value="Move Up"
                                 onclick="move_up(this)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                 class="bi bi-caret-up-fill" viewBox="0 0 16 16">
-                                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"></path>
-                            </svg>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="move_down btn btn-sm btn-light" type="button"
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z">
+                                    </path>
+                                </svg>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="move_down btn btn-sm btn-light" type="button"
                                 name="proofline_set-{{ forloop.counter0 }}-move_down-btn"
-                                id="id_proofline_set-{{ forloop.counter0 }}-move_down-btn"
-                                value="Move Down"
+                                id="id_proofline_set-{{ forloop.counter0 }}-move_down-btn" value="Move Down"
                                 onclick="move_down(this)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                 class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"></path>
-                            </svg>
-                        </button>
-                    </td>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z">
+                                    </path>
+                                </svg>
+                            </button>
+                        </td>
 
-                    <td>
-                        <button class="delete-row btn btn-danger btn-sm" type="button"
+                        <td>
+                            <button class="delete-row btn btn-danger btn-sm" type="button"
                                 name="proofline_set-{{ forloop.counter0 }}-delete-btn"
-                                id="id_proofline_set-{{ forloop.counter0 }}-delete-btn"
-                                value="Delete Row" onclick="delete_form(this)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                 class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"></path>
-                            </svg>
-                        </button>
+                                id="id_proofline_set-{{ forloop.counter0 }}-delete-btn" value="Delete Row"
+                                onclick="delete_form(this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
+                                    class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z">
+                                    </path>
+                                </svg>
+                            </button>
 
-                    </td>
-                    <!--
+                        </td>
+                        <!--
                     {% if request.user.is_instructor%}
                     <td>
                         <button class="add_comment btn btn-light btn-sm" type="button" 
@@ -299,89 +324,97 @@
                     <td>
                         {{ line.response }}
                     </td>
-                -->
-                    <td hidden>{{ line.id }}{{ line.DELETE }}{{ line.ORDER }}</td>
+                 -->
+                        <td hidden>{{ line.id }}{{ line.DELETE }}{{ line.ORDER }}</td>
                     </tr>
                     {% endfor %}
-                    </tbody>
-                
-                    <tr id="empty-form" class="hidden">
+                </tbody>
 
-                        <td>{{ formset.empty_form.line_no|add_class:"line-no-CSS" }}</td>
-                        <td>{{ formset.empty_form.formula|add_class:"form-fields-CSS" }}</td>
-                        <td>{{ formset.empty_form.rule|add_class:"form-fields-CSS" }}</td>
-                        <td>
-                            <button class="insert-row btn btn-primary btn-sm" type="button"
-                                    name="proofline_set-__prefix__-insert-btn"
-                                    id="id_proofline_set-__prefix__-insert-btn"
-                                    value="Insert Row" onclick="insert_form(this)">
+                <tr id="empty-form" class="hidden">
 
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                     class="bi bi-plus-square-fill" viewBox="0 0 16 16">
-                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"></path>
-                                </svg>
-                            </button>
-                        </td>
-                        <td>
-                            <button class="make_parent btn btn-info btn-sm" type="button"
-                                    name="proofline_set-__prefix__-make_parent-btn"
-                                    id="id_proofline_set-__prefix__-make_parent-btn"
-                                    value="Make Parent" onclick="make_parent(this)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                     class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
-                                    <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1z"></path>
-                                </svg>
+                    <td>{{ formset.empty_form.line_no|add_class:"line-no-CSS" }}</td>
+                    <td>{{ formset.empty_form.formula|add_class:"form-fields-CSS" }}</td>
+                    <td>{{ formset.empty_form.rule|add_class:"form-fields-CSS" }}</td>
+                    <td>
+                        <button class="insert-row btn btn-primary btn-sm" type="button"
+                            name="proofline_set-__prefix__-insert-btn" id="id_proofline_set-__prefix__-insert-btn"
+                            value="Insert Row" onclick="insert_form(this)">
 
-                            </button>
-                        </td>
-                        <td>
-                            <button class="create_subproof btn btn-info btn-sm" type="button"
-                                    name="proofline_set-__prefix__-create_subproof-btn"
-                                    id="id_proofline_set-__prefix__-create_subproof-btn"
-                                    value="Create Subproof" onclick="create_subproof(this)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                     class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
-                                    <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"></path>
-                                </svg>
-                            </button>
-                        </td>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
+                                class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z">
+                                </path>
+                            </svg>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="make_parent btn btn-info btn-sm" type="button"
+                            name="proofline_set-__prefix__-make_parent-btn"
+                            id="id_proofline_set-__prefix__-make_parent-btn" value="Make Parent"
+                            onclick="make_parent(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
+                                class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1z">
+                                </path>
+                            </svg>
 
-                        <td>
-                            <button class="move_up btn btn-sm btn-light" type="button"
-                                    name="proofline_set-__prefix__-move_up-btn"
-                                    id="id_proofline_set-__prefix__-move_up-btn"
-                                    value="Move Up" onclick="move_up(this)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                     class="bi bi-caret-up-fill" viewBox="0 0 16 16">
-                                    <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"></path>
-                                </svg>
-                            </button>
-                        </td>
-                        <td>
-                            <button class="move_down btn btn-sm btn-light" type="button"
-                                    name="proofline_set-__prefix__-move_down-btn"
-                                    id="id_proofline_set-__prefix__-move_down-btn"
-                                    value="Move Down" onclick="move_down(this)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                     class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"></path>
-                                </svg>
-                            </button>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="create_subproof btn btn-info btn-sm" type="button"
+                            name="proofline_set-__prefix__-create_subproof-btn"
+                            id="id_proofline_set-__prefix__-create_subproof-btn" value="Create Subproof"
+                            onclick="create_subproof(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
+                                class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z">
+                                </path>
+                            </svg>
+                        </button>
+                    </td>
 
-                        </td>
+                    <td>
+                        <button class="move_up btn btn-sm btn-light" type="button"
+                            name="proofline_set-__prefix__-move_up-btn" id="id_proofline_set-__prefix__-move_up-btn"
+                            value="Move Up" onclick="move_up(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z">
+                                </path>
+                            </svg>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="move_down btn btn-sm btn-light" type="button"
+                            name="proofline_set-__prefix__-move_down-btn" id="id_proofline_set-__prefix__-move_down-btn"
+                            value="Move Down" onclick="move_down(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z">
+                                </path>
+                            </svg>
+                        </button>
 
-                        <td>
-                            <button class="delete-row btn btn-danger btn-sm" type="button"
-                                    name="proofline_set-__prefix__-delete-btn"
-                                    id="id_proofline_set-__prefix__-delete-btn"
-                                    value="Delete Row" onclick="delete_form(this)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                     class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"></path>
-                                </svg>
-                            </button>
-                        </td>
-<!--
+                    </td>
+
+                    <td>
+                        <button class="delete-row btn btn-danger btn-sm" type="button"
+                            name="proofline_set-__prefix__-delete-btn" id="id_proofline_set-__prefix__-delete-btn"
+                            value="Delete Row" onclick="delete_form(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
+                                class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z">
+                                </path>
+                            </svg>
+                        </button>
+                    </td>
+                    <!--
                         {% if request.user.is_instructor%}
                         <td>
                             <button class="add_comment btn btn-light btn-sm" type="button" 
@@ -423,12 +456,12 @@
                             {{ formset.empty_form.response }}
                         </td>
                     -->
-                        <td hidden>
-                            {{ formset.empty_form.id }}{{ formset.empty_form.DELETE }}{{ formset.empty_form.ORDER }}
-                        </td>
-                    
-                    </tr>
-                </table>
+                    <td hidden>
+                        {{ formset.empty_form.id }}{{ formset.empty_form.DELETE }}{{ formset.empty_form.ORDER }}
+                    </td>
+
+                </tr>
+            </table>
             {% endif %}
 
             <div style="clear: left">
@@ -436,15 +469,15 @@
                 <button name="check_proof" type="submit" class="btn btn-primary mb-3">Check Proof</button>
 
                 {% if object.pk %} {% if object.created_by == request.user %}
-                    <button name="submit" type="submit" class="btn btn-primary mb-3">Save</button>
+                <button name="submit" type="submit" class="btn btn-primary mb-3">Save</button>
 
-                    </button>
+                </button>
 
 
                 {% endif %} {% else %}
-                    <button name="submit" type="submit" class="btn btn-primary mb-3">Save</button>
+                <button name="submit" type="submit" class="btn btn-primary mb-3">Save</button>
 
-                    </button>
+                </button>
 
                 {% endif %}
             </div>
@@ -455,104 +488,111 @@
 
             <!-- Display validation errors from form fields-->
             {% for line in formset %} {% for field in line %} {% if field.errors %}
-                <div class="container">
-                    {% for error in field.errors %}
-                        <div class="row">
-                            {% if line.line_no.value %}
-                                <p>
-                                    <strong>Error on line {{ line.line_no.value }}:</strong> {{ error }}</p>
-                            {% elif error == "This field is required." %}
-                                <p>
-                                    <strong>Error:</strong> All fields are required</p>
-                            {% else %}
-                                <p>
-                                    <strong>Error:</strong> {{ error }}</p>
+            <div class="container">
+                {% for error in field.errors %}
+                <div class="row">
+                    {% if line.line_no.value %}
+                    <p>
+                        <strong>Error on line {{ line.line_no.value }}:</strong> {{ error }}
+                    </p>
+                    {% elif error == "This field is required." %}
+                    <p>
+                        <strong>Error:</strong> All fields are required
+                    </p>
+                    {% else %}
+                    <p>
+                        <strong>Error:</strong> {{ error }}
+                    </p>
 
-                            {% endif %}
-                        </div>
-                    {% endfor %}
+                    {% endif %}
                 </div>
+                {% endfor %}
+            </div>
             {% endif %} {% endfor %} {% endfor %}
 
             <!-- Display response from Proof Checker-->
             {% if response %} {% if response.err_msg %}
-                <p>
-                <div class="alert alert-primary" role="alert">
-                    Keep at it! Don't forget to save your work by clicking "Save"! This will allow you to return to your
-                    work on this later!
-                </div><br>
-                <strong>Result:</strong> {{ response.err_msg }}
+            <p>
+            <div class="alert alert-primary" role="alert">
+                Keep at it! Don't forget to save your work by clicking "Save"! This will allow you to return to your
+                work on this later!
+            </div><br>
+            <strong>Result:</strong> {{ response.err_msg }}
 
 
             {% else %}
-                <p>
-                <div class="alert alert-success" role="alert">
-                    Great job! Don't forget to save your work by clicking "Save"! This will allow you to view this
-                    correct
-                    proof later!
-                </div><br>
-                <strong>Result:</strong> 
-                {% if 'check_disproof' in request.POST %}
-                    That is a valid counterexample -- Good Job!
-                {% else %}
-                    The proof is valid and complete!
-                {% endif %}
+            <p>
+            <div class="alert alert-success" role="alert">
+                Great job! Don't forget to save your work by clicking "Save"! This will allow you to view this
+                correct
+                proof later!
+            </div><br>
+            <strong>Result:</strong>
+            {% if 'check_disproof' in request.POST %}
+            That is a valid counterexample -- Good Job!
+            {% else %}
+            The proof is valid and complete!
+            {% endif %}
             {% endif %} {% endif %}
             <hr>
-        </form>
+    </form>
 
-        <div class="dropdown mb-3">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"
-                    aria-expanded="false">
-                Download
-            </button>
+    <div class="dropdown mb-3">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+            Download
+        </button>
 
-            <div class="dropdown-menu">
-                <a class="dropdown-item" id="download" type="submit">Screenshot</a>
-                {% if object.pk %} {% if object.created_by == request.user %}
-                <a href="{% url 'get-latex-file' object.pk %}" class="dropdown-item">LaTeX.tex file</a>
-                {% endif %}{% endif %} 
-                 
-            </div>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" id="download" type="submit">Screenshot</a>
+            {% if object.pk %} {% if object.created_by == request.user %}
+            <a href="{% url 'get-latex-file' object.pk %}" class="dropdown-item">LaTeX.tex file</a>
+            {% endif %}{% endif %}
+
         </div>
-
     </div>
+</div>
+</div> 
+{% if not object.pk %} {% if not object.created_by == request.user %}
+<script type="text/javascript">
+    document.getElementById("proof_form_display").style.display = "none";
+</script>
+{% endif %}{% endif %}
+<script type="text/javascript">
 
-    <script type="text/javascript">
-        let typingTimer;
-        const doneTypingInterval = 2000;
-        const $input = $('#proof_form');
+    let typingTimer;
+    const doneTypingInterval = 2000;
+    const $input = $('#proof_form');
 
-        $input.on('keyup', function () {
-            clearTimeout(typingTimer);
-            typingTimer = setTimeout(doneTyping, doneTypingInterval);
-        });
+    $input.on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    });
 
-        $input.on('keydown', function () {
-            clearTimeout(typingTimer);
-        });
+    $input.on('keydown', function () {
+        clearTimeout(typingTimer);
+    });
 
-        let timer;
+    let timer;
 
-        function doneTyping() {
-            const box = document.getElementById('auto-save-message');
-            const datetime = new Date().toLocaleTimeString();
-            document.getElementById("time").textContent = datetime;
-            box.style.visibility = 'visible';
-            autoSave()
-            clearTimeout(timer);
-            timer = setTimeout(() => {
-                box.style.visibility = 'hidden';
-            }, 6000);
-        }
+    function doneTyping() {
+        const box = document.getElementById('auto-save-message');
+        const datetime = new Date().toLocaleTimeString();
+        document.getElementById("time").textContent = datetime;
+        box.style.visibility = 'visible';
+        autoSave()
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            box.style.visibility = 'hidden';
+        }, 6000);
+    }
 
-        function autoSave() {
-            $.post('', $('#proof_form').serialize() + '&autosave');
+    function autoSave() {
+        $.post('', $('#proof_form').serialize() + '&autosave');
 
-        };
-    </script>
+    };
+</script>
 
-    <script src="{% static 'js/syntax.js' %}"></script>
-    <script src="{% static 'js/valid_input.js' %}"></script>
-    <script src="{% static 'js/proof_checker.js' %}"></script>
+<script src="{% static 'js/syntax.js' %}"></script>
+<script src="{% static 'js/valid_input.js' %}"></script>
+<script src="{% static 'js/proof_checker.js' %}"></script>
 {% endblock %}
